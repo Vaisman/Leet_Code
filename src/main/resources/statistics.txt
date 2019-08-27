@@ -1,0 +1,28 @@
+Solved:
+2019:
+Aug
+Sep
+Oct
+Nov
+Dec
+Jan
+
+Backtracking general
+https://leetcode.com/problems/subsets/discuss/27281/A-general-approach-to-backtracking-questions-in-Java-(Subsets-Permutations-Combination-Sum-Palindrome-Partitioning)
+
+Salary negotiation
+https://softwareengineeringdaily.com/2016/07/11/salary-negotiation-with-haseeb-qureshi/
+
+Behaviour:
+ https://www.youtube.com/watch?v=PJKYqLP6MRE
+
+Design:
+ https://www.youtube.com/watch?v=ZgdS0EUmn70
+
+Design pattern:
+ Features:
+ Estimation:
+ Design Goals:
+ Skeleton of the design:
+ Deep Dive:
+ Optimization:
