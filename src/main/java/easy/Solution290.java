@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Solution290 {
     public boolean wordPattern(String pattern, String str) {
         if (pattern == null || pattern.length() == 0 || str == null || str.length() == 0) {
-            return true;
+            return false;
         }
 
         Map<String, Integer> map1 = new HashMap<>();
