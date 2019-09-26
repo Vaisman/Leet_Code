@@ -2,11 +2,8 @@ package easy;
 
 public class Solution1184 {
     public int distanceBetweenBusStops(int[] distance, int start, int destination) {
-        if (start > destination) {
-            int temp = start;
-            start = destination;
-            destination = temp;
-        }
+        if (start > destination)
+        return distanceBetweenBusStops(distance, destination, start);
 
         int res = 0;
         int total = 0;
