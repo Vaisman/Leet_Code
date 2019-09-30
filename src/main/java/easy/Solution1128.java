@@ -29,4 +29,25 @@ public class Solution1128 {
         }
         return arr1;
     }
+
+    // 1000 constraint
+    public int[] relativeSortArray1(int[] arr1, int[] arr2) {
+        int st[]=new int[1001];
+
+        for(int x:arr1){
+            st[x]++;
+        }
+
+        int j=0;
+        for(int p:arr2){
+            for(int i=0;i<st[p];i++)
+                arr1[j++]=p;
+            st[p]=0;
+        }
+        for(int k=1;k<=1000;k++){
+            for(int i=0;i<st[k];i++)
+                arr1[j++]=k;
+        }
+        return arr1;
+    }
 }
