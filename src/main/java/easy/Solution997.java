@@ -2,10 +2,6 @@ package easy;
 
 public class Solution997 {
     public int findJudge(int N, int[][] trust) {
-        if (trust == null || trust.length == 0 || trust[0].length == 0) {
-            return -1;
-        }
-
         int[] count = new int[N+1];
         for (int[] t: trust) {
             count[t[0]]--;
