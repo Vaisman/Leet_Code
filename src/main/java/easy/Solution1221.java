@@ -1,5 +1,7 @@
 package easy;
 
+import org.junit.Test;
+
 public class Solution1221 {
     public int balancedStringSplit(String s) {
         int res = 0, cnt = 0;
@@ -8,5 +10,10 @@ public class Solution1221 {
             if (cnt == 0) ++res;
         }
         return res;
+    }
+
+    @Test
+    public void test() {
+        balancedStringSplit("RLRRLLRLRL");
     }
 }
