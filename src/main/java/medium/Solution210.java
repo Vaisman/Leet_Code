@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Solution210 {
-
     public int[] res;
     public int index = 0;
 
