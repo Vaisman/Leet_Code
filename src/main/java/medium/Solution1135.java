@@ -2,7 +2,9 @@ package medium;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -12,7 +14,7 @@ public class Solution1135 {
             return 0;
         }
 
-        List<List<int[]>> graph = getGraph(n, connections);
+        Map<Integer, List<int[]>> graph = getGraph(connections);
         boolean[] visited = new boolean[n + 1];
 
         Queue<int[]> queue = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
@@ -38,18 +40,14 @@ public class Solution1135 {
         return numberOfCitiesVisited == n ? cost : -1;
     }
 
-    private List<List<int[]>> getGraph(int n, int[][] connections) {
-        List<List<int[]>> graph = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
-            graph.add(new ArrayList<>());
-        }
-
+    private Map<Integer, List<int[]>> getGraph(int[][] connections) {
+        Map<Integer, List<int[]>> graph = new HashMap<>();
         for (int[] conn : connections) {
             int c1 = conn[0];
             int c2 = conn[1];
             int price = conn[2];
-            graph.get(c1).add(new int[] {c2, price});
-            graph.get(c2).add(new int[] {c1, price});
+            graph.computeIfAbsent(c1, a -> new ArrayList<>()).add(new int[] {c2, price});
+            graph.computeIfAbsent(c2, a -> new ArrayList<>()).add(new int[] {c1, price});
         }
         return graph;
     }
