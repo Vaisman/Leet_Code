@@ -1,48 +1,56 @@
 package medium;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class Solution1135 {
-    int[] parent;
-    int n;
-
-    private void union(int x, int y) {
-        int px = find(x);
-        int py = find(y);
-
-        if (px != py) {
-            parent[px] = py;
-            n--;
-        }
-    }
-
-    private int find(int x) {
-        if (parent[x] == x) {
-            return parent[x];
-        }
-        parent[x] = find(parent[x]); // path compression
-        return parent[x];
-    }
-
-    public int minimumCost(int N, int[][] connections) {
-        parent = new int[N + 1];
-        n = N;
-        for (int i = 0; i <= N; i++) {
-            parent[i] = i;
+    public int minimumCost(int n, int[][] connections) {
+        if (n == 1) {
+            return 0;
         }
 
-        Arrays.sort(connections, (a, b) -> (a[2] - b[2]));
+        List<List<int[]>> graph = getGraph(n, connections);
+        boolean[] visited = new boolean[n + 1];
 
-        int res = 0;
+        Queue<int[]> queue = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+        int cost = 0, numberOfCitiesVisited = 0;
 
-        for (int[] c : connections) {
-            int x = c[0], y = c[1];
-            if (find(x) != find(y)) {
-                res += c[2];
-                union(x, y);
+        queue.offer(new int[] {1, 0});
+        while (!queue.isEmpty()) {
+            int[] u = queue.poll();
+            if (visited[u[0]]) {
+                continue;
+            }
+            visited[u[0]] = true;
+            cost += u[1]; //first time visit so cumulate the cost
+            numberOfCitiesVisited++;
+
+            for (int[] v : graph.get(u[0])) {
+                if (!visited[v[0]]) {
+                    queue.offer(new int[] {v[0], v[1]});
+                }
             }
         }
 
-        return n == 1 ? res : -1;
+        return numberOfCitiesVisited == n ? cost : -1;
+    }
+
+    private List<List<int[]>> getGraph(int n, int[][] connections) {
+        List<List<int[]>> graph = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        for (int[] conn : connections) {
+            int c1 = conn[0];
+            int c2 = conn[1];
+            int price = conn[2];
+            graph.get(c1).add(new int[] {c2, price});
+            graph.get(c2).add(new int[] {c1, price});
+        }
+        return graph;
     }
 }
