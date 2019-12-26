@@ -1,5 +1,7 @@
 package medium;
 
+import org.junit.Test;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -42,5 +44,10 @@ public class Solution542 {
             }
         }
         return matrix;
+    }
+
+    @Test
+    public void test(){
+        updateMatrix(new int[][]{{0,0,0},{0,1,0},{1,1,1}});
     }
 }
