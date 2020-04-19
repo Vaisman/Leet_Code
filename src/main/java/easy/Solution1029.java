@@ -69,6 +69,6 @@ public class Solution1029 {
         n[1][0] = 30;   n[1][1] = 200;
         n[2][0] = 400;  n[2][1] = 50;
         n[3][0] = 30;   n[3][1] = 20;
-        twoCitySchedCost(n);
+        twoCitySchedCostSort(n);
     }
 }
