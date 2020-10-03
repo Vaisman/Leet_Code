@@ -2,17 +2,20 @@ package Amazon;
 
 public class AmazonMusicPairs {
     public int numPairsDivisibleBy60(int[] arr) {
-        int count = 0;
-        int len = arr.length;
+        if (arr == null || arr.length == 0) {
+            return 0;
+        }
 
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < arr.length; i++) {
             arr[i] = arr[i] % 60;
         }
 
         int[] res = new int[60];
-        for (int j : arr)
+        for (int j : arr) {
             res[j]++;
+        }
 
+        int count = 0;
         for (int i = 1; i < 30; i++) {
             count = count + (res[i] * res[60 - i]);
         }
