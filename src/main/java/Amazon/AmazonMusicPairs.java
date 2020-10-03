@@ -2,7 +2,7 @@ package Amazon;
 
 public class AmazonMusicPairs {
     public int numPairsDivisibleBy60(int[] arr) {
-        if (arr == null || arr.length == 0) {
+        if (arr == null || arr.length <= 1) {
             return 0;
         }
 
