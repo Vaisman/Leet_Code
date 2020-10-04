@@ -13,12 +13,15 @@ public class LongestStringMadeUpOfOnlyVowels {
         int len = s.length();
         int start = 0;
         int end = len - 1;
+        int sum = 0;
         while (start < len && isVowel(s.charAt(start))) {
             ++start;
+            sum++; //count of vowels at start of string
         }
 
         while (end >= 0 && isVowel(s.charAt(end))) {
             --end;
+            sum++; //count of vowels at end of string
         }
 
         // checking area come to [start, end]
@@ -26,18 +29,21 @@ public class LongestStringMadeUpOfOnlyVowels {
             return len;
         }
 
-        int res = start + len - 1 - end;
-
-        int longest = 0;
-        int sum = 0;
-        for (int i = start + 1; i <= end; ++i) {
-            if (isVowel(s.charAt(i)))
-                ++sum;
+        int longestLength = 0;
+        int currLength = 0;
+        // Find longest vowel sub string between start and end
+        while(start <=end)
+        {
+            if(isVowel(s.charAt(start)))
+                currLength++;
             else
-                sum = 0;
-            longest = Math.max(sum, longest);
+            {
+                longestLength = Math.max(currLength, longestLength);
+                currLength = 0;
+            }
+            start++;
         }
-        return longest + res;
+        return longestLength + sum;
     }
 
     @Test
