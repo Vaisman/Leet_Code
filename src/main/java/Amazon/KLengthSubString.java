@@ -35,6 +35,29 @@ public class KLengthSubString {
         return kLength.toString().trim();
     }
 
+    /*
+    public int numKLenSubstrNoRepeats(String S, int K) {
+        int[] window = new int[26];
+        char[] sc = S.toCharArray();
+        int result = 0;
+
+        for (int i = 0; i < sc.length; i++) {
+            window[sc[i]-'a']++;
+            if (i >= K) window[sc[i-K]-'a']--;
+            if (i >= K-1 && noDup(window)) result++;
+        }
+
+        return result;
+    }
+
+    boolean noDup(int[] window) {
+        for (int i = 0; i < 26; i++) {
+            if (window[i] > 1) return false;
+        }
+        return true;
+    }
+     */
+
     @Test
     public void test() {
         String ans = solution("The quick brown fox jumps over the lazy dog", 39);
