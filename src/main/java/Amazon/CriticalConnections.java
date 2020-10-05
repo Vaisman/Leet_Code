@@ -5,6 +5,8 @@ import org.junit.Test;
 import java.util.*;
 
 public class CriticalConnections {
+    // check every node by DSU like in CriticalRouters
+
     class PairInt {
         int first;
         int second;
