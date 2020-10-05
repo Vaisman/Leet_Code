@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ToysProblem {
     public ArrayList<String> popularNToys(int numToys, int topToys, List<String> toys, int numQuotes, List<String> quotes) {
@@ -84,5 +85,17 @@ public class ToysProblem {
                 "betacelluar is better than deltacellular");
         System.out.println(popularNToys(numToys, topToys, toys, numQuotes, quotes));
         System.out.println(popularNToys1(numToys, topToys, toys, numQuotes, quotes));
+    }
+
+    @Test
+    public void test1() {
+        List<String> wordDict = Stream.of("elmo", "elsa", "abc","z").map(x->x.charAt(0)+"").collect(Collectors.toList());
+        List<String> quote = Stream.of("z","z","z","z","Elmo", "Elsa", "Elmo", "Elsa", "Elmo", "Elsa", "abc")
+                .collect(Collectors.toList());
+
+        ArrayList<String>ans = popularNToys1(3, 2, wordDict, 2, quote);
+        for (String an : ans) {
+            System.out.println(an);
+        }
     }
 }
