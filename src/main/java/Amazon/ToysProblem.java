@@ -42,6 +42,34 @@ public class ToysProblem {
                 .collect(Collectors.toList());
     }
 
+    public static ArrayList<String> popularNToys1(int numToys, int topToys, List<String> toys, int numQuotes,
+                                                 List<String> quotes) {
+        Map<String, Integer> counter = new HashMap<>();
+        for (String quote : quotes) {
+            if (toys.contains(quote.toLowerCase())) {
+                if (!counter.containsKey(quote)) {
+                    counter.put(quote, 1);
+                } else {
+                    counter.replace(quote, counter.get(quote) + 1);
+                }
+            }
+        }
+        PriorityQueue<String> pq = new PriorityQueue<>((w1, w2) ->
+                counter.get(w1).equals(counter.get(w2)) ? w1.compareTo(w2) : counter.get(w1) - counter.get(w2));
+        for (String toy : counter.keySet()) {
+            pq.offer(toy);
+            if (pq.size() > topToys) {
+                pq.poll();
+            }
+        }
+        ArrayList<String> ans = new ArrayList<>();
+        while (!pq.isEmpty()) {
+            ans.add(pq.poll());
+        }
+        Collections.reverse(ans);
+        return ans;
+    }
+
     @Test
     public void test(){
         int numToys = 5;
@@ -55,5 +83,6 @@ public class ToysProblem {
                 "cetracular is worst than eurocell",
                 "betacelluar is better than deltacellular");
         System.out.println(popularNToys(numToys, topToys, toys, numQuotes, quotes));
+        System.out.println(popularNToys1(numToys, topToys, toys, numQuotes, quotes));
     }
 }
