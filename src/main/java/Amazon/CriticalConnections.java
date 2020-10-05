@@ -16,20 +16,14 @@ public class CriticalConnections {
 
     List<PairInt> list;
     Map<Integer, Boolean> visited;
-    List<PairInt> criticalConnections(int numOfServers, int numOfConnections,
-                                      List<PairInt> connections)
-    {
+    List<PairInt> criticalConnections(int numOfServers, int numOfConnections,  List<PairInt> connections) {
         Map<Integer, HashSet<Integer>> adj = new HashMap<>();
         for(PairInt connection : connections){
             int u = connection.first;
             int v = connection.second;
-            if(adj.get(u) == null){
-                adj.put(u,new HashSet<Integer>());
-            }
+            adj.computeIfAbsent(u, k -> new HashSet<>());
             adj.get(u).add(v);
-            if(adj.get(v) == null){
-                adj.put(v,new HashSet<Integer>());
-            }
+            adj.computeIfAbsent(v, k -> new HashSet<>());
             adj.get(v).add(u);
         }
 
@@ -54,12 +48,12 @@ public class CriticalConnections {
         return list;
     }
 
-    public void DFS(Map<Integer, HashSet<Integer>> adj, int u){
+    public void DFS(Map<Integer, HashSet<Integer>> adj, int u) {
         visited.put(u, true);
-        if(adj.get(u).size()!=0){
-            for(int v : adj.get(u)){
-                if(visited.getOrDefault(v, false)== false){
-                    DFS(adj,v);
+        if (!adj.get(u).isEmpty()) {
+            for (int v : adj.get(u)) {
+                if (!visited.getOrDefault(v, false)) {
+                    DFS(adj, v);
                 }
             }
         }
