@@ -100,7 +100,7 @@ public class LargestItemAssociation {
         }
     }
 
-    public List<String> largestItemAssociation(List<PairString> itemAssociation) {
+    public List<String> largestItemAssociation1(List<PairString> itemAssociation) {
         if (itemAssociation == null || itemAssociation.isEmpty()) {
             return Collections.emptyList();
         }
@@ -119,40 +119,44 @@ public class LargestItemAssociation {
         return uf.largestComponent;
     }
 
-    public static List<String> largestItemAssociation1(List<PairString> itemAssociation) {
+    public static List<String> largestItemAssociation(List<PairString> itemAssociation) {
         if (itemAssociation == null || itemAssociation.isEmpty()) {
             return Collections.emptyList();
         }
 
-        Map<String, HashSet<String>> map = new HashMap<>();
-        for (PairString p : itemAssociation) {
-            if (!map.containsKey(p.first))
-                map.put(p.first, new HashSet<>());
-            if (!map.containsKey(p.second))
-                map.put(p.second, new HashSet<>());
-            map.get(p.first).add(p.first);
-            map.get(p.first).add(p.second);
-            map.get(p.second).add(p.second);
-            map.get(p.second).add(p.first);
+        Map<String, Set<String>> map = new HashMap<>();
+        for (PairString pair : itemAssociation) {
+            Set<String> set = map.getOrDefault(pair.first, new TreeSet<>());
+            set.add(pair.first);
+            set.add(pair.second);
+            set.addAll(map.getOrDefault(pair.second, new TreeSet<>()));
+            map.put(pair.first, set);
+            map.put(pair.second, set);
         }
 
-        PriorityQueue<String> pq = new PriorityQueue<>((a, b) -> map.get(b).size() - map.get(a).size());
-        for (String item : map.keySet()) {
-            pq.offer(item);
+        Set<String> checked = new HashSet<>();
+        Queue<List<String>> pq = new PriorityQueue<>((l1, l2) -> (l1.size() != l2.size() ? l2.size() - l1.size() : l1.get(0).compareTo(l2.get(0))));
+
+        for (Map.Entry<String, Set<String>> item : map.entrySet()) {
+            if (checked.contains(item.getKey())) {
+                continue;
+            }
+            pq.add(new ArrayList<>(item.getValue()));
+            checked.addAll(item.getValue());
         }
-        TreeSet<String> set = new TreeSet<>(map.get(pq.poll()));
-        return new LinkedList<>(set);
+        return pq.remove();
     }
 
     @Test
     public void test0() {
         List<PairString> pairs = Arrays.asList( //
-                new PairString("item3", "item2"),
                 new PairString("item3", "item4"),
-                new PairString("item4", "item5")
+                new PairString("item4", "item5"),
+                new PairString("item0", "item2"),
+                new PairString("item1", "item2")
         );
 
-        largestItemAssociation1(pairs);
+        largestItemAssociation(pairs);
     }
 
     @Test
@@ -223,6 +227,105 @@ public class LargestItemAssociation {
 }
 
     /*
+
+#include <list>
+#include <set>
+#include <vector>
+using namespace std;
+
+struct PairString {
+	string first;
+	string second;
+
+	PairString(string first, string second) {
+		this->first = first;
+		this->second = second;
+	}
+};
+
+struct Solution {
+	static list<string> largestItemAssociation(list<PairString> itemAssociation) {
+		vector<set<string>> dataList;
+
+		for (const auto pairItem : itemAssociation)
+		{
+			bool found = false;
+			for (auto& eachData : dataList)
+			{
+				// O(2 * log n)
+				if ((eachData.find(pairItem.first) != eachData.end()) || (eachData.find(pairItem.second) != eachData.end()))
+				{
+					found = true;
+					eachData.insert(pairItem.first);
+					eachData.insert(pairItem.second);
+
+					break;
+				}
+			}
+
+			// it's a new PairString!
+			if (found == false)
+				dataList.push_back(set<string> {pairItem.first, pairItem.second });
+		}
+
+		// to find the longest data
+		int i = 0;
+		int maxSizeDataIndex = 0;
+		int currMaxSize = 0;
+		for (const auto eachData : dataList)
+		{
+			if (currMaxSize < eachData.size())
+			{
+				currMaxSize = eachData.size();
+				maxSizeDataIndex = i;
+			}
+
+			++i;
+		}
+
+		// to change the format from set to list
+		list<string> result;
+		for (auto eachString : dataList[maxSizeDataIndex])
+			result.push_back(eachString);
+
+		return result;
+	}
+};
+
+int main(void)
+{
+	list<PairString> input1{
+		PairString("item1", "item2"),
+		PairString("item3", "item4"),
+		PairString("item4", "item5")
+	};
+
+	list<PairString> input2{
+		PairString("item3","item4"),
+		PairString("item1","item2"),
+		PairString("item5","item6"),
+		PairString("item4","item5"),
+		PairString("item2","item7"),
+		PairString("item7","item8")
+	};
+
+	list<PairString> input3{
+		PairString("item3","item4"),
+		PairString("item1","item2"),
+		PairString("item5","item6"),
+		PairString("item4","item5"),
+		PairString("item2","item7"),
+		PairString("item7","item8"),
+		PairString("item2","item3"),
+		PairString("item6","item7"),
+		PairString("item0","item2")
+	};
+
+	Solution::largestItemAssociation(input1);
+
+	return 0;
+}
+
     public static List<String> largestItemAssociation(List<PairString> itemAssociation) {
         if (itemAssociation == null || itemAssociation.isEmpty()) {
             return Collections.emptyList();
