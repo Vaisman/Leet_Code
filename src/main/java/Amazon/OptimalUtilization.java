@@ -82,6 +82,50 @@ public class OptimalUtilization {
         return result;
     }
 
+    class Pair {
+        int id1;
+        int id2;
+        int value;
+
+        Pair(int i, int j, int v) {
+            this.id1 = i;
+            this.id2 = j;
+            this.value = v;
+        }
+    }
+
+    private List<List<Integer>> getTargetSumIds(int[][] a, int[][] b, int target) {
+        List<List<Integer>> lst = new ArrayList<>();
+        Arrays.sort(a, (x, y) -> x[1] - y[1]);
+        Arrays.sort(b, (x, y) -> x[1] - y[1]);
+
+        int lowIndex = 0;
+        int highIndex = a.length - 1;
+        PriorityQueue<Pair> q = new PriorityQueue<>((x, y) -> (y.value - x.value));
+        while (lowIndex < b.length && highIndex >= 0) {
+            int sum = b[lowIndex][1] + a[highIndex][1];
+            if (sum <= target) {
+                q.add(new Pair(a[highIndex][0], b[lowIndex][0], sum));
+                lowIndex++;
+            } else {
+                highIndex--;
+            }
+        }
+
+        int largetSumValue = q.peek().value;
+        while (!q.isEmpty()) {
+            int curValue = q.peek().value;
+            if (curValue < largetSumValue)
+                break;
+            ArrayList<Integer> l = new ArrayList<Integer>();
+            l.add(q.peek().id1);
+            l.add(q.peek().id2);
+            q.poll();
+            lst.add(l);
+        }
+        return lst;
+    }
+
     @Test
     public void test() {
         int[][] a = { { 1, 8 }, { 2, 15 }, { 3, 9 } };
