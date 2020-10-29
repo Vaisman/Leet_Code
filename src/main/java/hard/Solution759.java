@@ -1,11 +1,10 @@
 package hard;
 
 import common.Interval;
+import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Solution759 {
     public List<Interval> employeeFreeTime(List<List<Interval>> avails) {
@@ -24,5 +23,15 @@ public class Solution759 {
             }
         }
         return result;
+    }
+
+    @Test
+    public void test() {
+        List<List<Interval>> lint = new ArrayList<>();
+        List<Interval> l1 = Arrays.asList(new Interval(1,2), new Interval(5,6));
+        List<Interval> l2 = Arrays.asList(new Interval(1,3));
+        List<Interval> l3 = Arrays.asList(new Interval(4,10));
+        lint = Arrays.asList(l1, l2, l3);
+        employeeFreeTime(lint);
     }
 }
