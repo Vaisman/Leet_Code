@@ -6,41 +6,40 @@ import java.util.*;
 
 public class Solution314 {
     public List<List<Integer>> verticalOrder(TreeNode root) {
-        if (root == null) {
-            return new ArrayList<>();
-        }
+        TreeMap<Integer, TreeMap<Integer, List<Integer>>> map = new TreeMap<>();
 
-        Map<Integer, List<Integer>> map = new HashMap<>();
-        Queue<Integer> levels = new LinkedList<>();
-        Queue<TreeNode> q = new LinkedList<>();
-        q.offer(root);
-        levels.offer(0);
+        helper(root, 0, 0, map);
 
-        int min = 0;
-        int max = 0;
-        while (!q.isEmpty()) {
-            int size = q.size();
-            for (int i = 0; i < size; i++) {
-                TreeNode curr = q.poll();
-                int level = levels.poll();
-                min = Math.min(level, min);
-                max = Math.max(level, max);
-                map.putIfAbsent(level, new ArrayList<>());
-                map.get(level).add(curr.val);
-                if (curr.left != null) {
-                    levels.offer(level - 1);
-                    q.offer(curr.left);
-                }
-                if (curr.right != null) {
-                    levels.offer(level + 1);
-                    q.offer(curr.right);
+        List<List<Integer>> result = new ArrayList<>();
+
+        for (TreeMap<Integer, List<Integer>> column : map.values()) {
+            List<Integer> list = new ArrayList<>();
+            for (List<Integer> nodes : column.values()) {
+                for (Integer node : nodes) {
+                    list.add(node);
                 }
             }
+            result.add(list);
         }
-        List<List<Integer>> res = new ArrayList<>();
-        for (int i = min; i <= max; i++) {
-            res.add(map.get(i));
+
+        return result;
+    }
+
+    private void helper(TreeNode root, int col, int row, TreeMap<Integer, TreeMap<Integer, List<Integer>>> map) {
+        if (root == null) {
+            return;
         }
-        return res;
+
+        if (!map.containsKey(col)) {
+            map.put(col, new TreeMap<>());
+        }
+
+        if (!map.get(col).containsKey(row)) {
+            map.get(col).put(row, new ArrayList<Integer>());
+        }
+
+        map.get(col).get(row).add(root.val);
+        helper(root.left, col - 1, row + 1, map);
+        helper(root.right, col + 1, row + 1, map);
     }
 }
