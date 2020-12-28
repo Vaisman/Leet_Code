@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 /*
 https://medium.com/@shahad9381/binary-heap-the-basics-implementations-b790b939a202
 */
-
+// PriorityQueueImpl
 public class BinaryHeap {
 
     private static final int CAPACITY= 16;
@@ -19,6 +19,52 @@ public class BinaryHeap {
         heapSize = 0;
         heap = new int[capacity+1];
         Arrays.fill(heap, -1);
+    }
+
+    public void push(int value) {
+        if (heapSize == heap.length) {
+            throw new IllegalArgumentException();
+        }
+
+        int pos = heapSize;
+        heap[pos] = value;
+        while(pos > 0) {
+            int parent = (pos+1) / 2 -1;
+            if (heap[parent] >= heap[pos]) break;
+            swapIndexes(parent, pos);
+            pos = parent;
+        }
+        heapSize++;
+    }
+
+    public int pop() {
+        if (heapSize == 0) throw new IllegalArgumentException();
+        int toReturn = heap[0];
+        heap[0] = heap[heapSize-1];
+
+        int pos = 0;
+        while(pos < heapSize/2) {
+            int leftChild = pos*2+1;
+            int rightChild = leftChild+1;
+            if(rightChild < heapSize && heap[leftChild] < heap[rightChild]) {
+                if (heap[pos] >= heap[rightChild]) break;
+                swapIndexes(pos, rightChild);
+                pos = rightChild;
+            } else {
+                if (heap[pos] >= heap[leftChild]) break;
+                swapIndexes(pos, leftChild);
+                pos = leftChild;
+            }
+        }
+
+        heapSize--;
+        return toReturn;
+    }
+
+    private void swapIndexes(int i, int j) {
+        int temp = heap[i];
+        heap[i] = heap[j];
+        heap[j] = temp;
     }
 
     public boolean isEmpty(){
